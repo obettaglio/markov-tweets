@@ -18,7 +18,7 @@ def open_and_read_file(file_path):
     return text_string
 
 
-def make_chains(text_string, input_n):
+def make_chains(text_string, INPUT_N):
     """Takes input text as string; returns _dictionary_ of markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -33,13 +33,13 @@ def make_chains(text_string, input_n):
 
     chains = {}
     words = text_string.split()
-    for i in range(len(words) - (input_n - 1)):
-        n_gram = tuple(words[i:i+input_n])
+    for i in range(len(words) - (INPUT_N - 1)):
+        n_gram = tuple(words[i:i+INPUT_N])
         try:
             if n_gram in chains:
-                chains[n_gram].append(words[i+input_n])
+                chains[n_gram].append(words[i+INPUT_N])
             else:
-                chains[n_gram] = [words[i+input_n]]
+                chains[n_gram] = [words[i+INPUT_N]]
         except:
             pass
 
@@ -164,27 +164,26 @@ def tweet(text):
     if new_tweet_option == 'q':
         quit()
     elif new_tweet_option == "":
-        # print ("you hit enter thnx")
-        input_text = open_and_read_file(input_path)
-        chains = make_chains(input_text, input_n)
-        random_text = make_text(chains)
-        tweet(random_text)
+        call_all_functions(INPUT_PATH, INPUT_N)
 
 
-input_path = sys.argv[1]
-input_n = int(sys.argv[2])
+def call_all_functions(INPUT_PATH, INPUT_N):
+    """Calls all the functions in order to tweet Markov text"""
 
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+    # Open the file and turn it into one long string
+    input_text = open_and_read_file(INPUT_PATH)
 
-# Get a Markov chain
-chains = make_chains(input_text, input_n)
+    # Get a Markov chain
+    chains = make_chains(input_text, INPUT_N)
 
-# Produce random text
-random_text = make_text(chains)
+    # Produce random text
+    random_text = make_text(chains)
 
-#
-tweet(random_text)
+    # Tweets text
+    tweet(random_text)
 
-# print random_text
-# print len(random_text)
+
+INPUT_PATH = sys.argv[1]
+INPUT_N = int(sys.argv[2])
+
+call_all_functions(INPUT_PATH, INPUT_N)
