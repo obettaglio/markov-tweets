@@ -1,5 +1,7 @@
 from random import choice
 import sys
+import os
+import twitter
 
 
 def open_and_read_file(file_path):
@@ -141,6 +143,34 @@ def make_text(chains):
     return text
 
 
+def tweet(text):
+    """Uses Twitter API to tweet text"""
+
+    api = twitter.Api(consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
+                      consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
+                      access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
+                      access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
+    # print(api.VerifyCredentials())
+
+    status = api.PostUpdate(text)
+    print text
+    print
+
+    new_tweet_option = raw_input("Enter to tweet again [q to quit]: ")
+
+    while new_tweet_option != 'q' and new_tweet_option != "":
+        new_tweet_option = raw_input("Enter to tweet again [q to quit]: ")
+
+    if new_tweet_option == 'q':
+        quit()
+    elif new_tweet_option == "":
+        # print ("you hit enter thnx")
+        input_text = open_and_read_file(input_path)
+        chains = make_chains(input_text, input_n)
+        random_text = make_text(chains)
+        tweet(random_text)
+
+
 input_path = sys.argv[1]
 input_n = int(sys.argv[2])
 
@@ -153,5 +183,8 @@ chains = make_chains(input_text, input_n)
 # Produce random text
 random_text = make_text(chains)
 
-print random_text
+#
+tweet(random_text)
+
+# print random_text
 # print len(random_text)
