@@ -4,16 +4,19 @@ import os
 import twitter
 
 
-def open_and_read_file(file_path):
-    """Takes file path as string; returns text as string.
+def open_and_read_file(file_paths):
+    """Takes file path as a list; returns texts as string.
 
-    Takes a string that is a file path, opens the file, and returns
-    the file's contents as one string of text.
+    Takes a list of strings that are file paths, opens the files, and returns
+    the files' contents as one string of text.
     """
 
-    open_file = open(file_path)
-    text_string = open_file.read()
-    open_file.close()
+    text_string = ""
+
+    for single_file in file_paths:
+        open_file = open(single_file)
+        text_string += open_file.read()
+        open_file.close()
 
     return text_string
 
@@ -183,7 +186,7 @@ def call_all_functions(INPUT_PATH, INPUT_N):
     tweet(random_text)
 
 
-INPUT_PATH = sys.argv[1]
-INPUT_N = int(sys.argv[2])
+INPUT_PATH = sys.argv[2:]
+INPUT_N = int(sys.argv[1])
 
 call_all_functions(INPUT_PATH, INPUT_N)
