@@ -147,25 +147,34 @@ def make_text(chains):
 
 
 def tweet(text):
-    """Uses Twitter API to tweet text"""
+    """Uses Twitter API to print last tweet and tweet new text"""
 
     api = twitter.Api(consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
                       consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
                       access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
                       access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
-    # print(api.VerifyCredentials())
 
+    # Print previous tweet from account
+    statuses = api.GetUserTimeline(screen_name='kikolivia')
+    print statuses[0].text
+    print
+
+    # Post and print new tweet
     status = api.PostUpdate(text)
     print text
     print
 
+    # Ask user for next action
     new_tweet_option = raw_input("Enter to tweet again [q to quit]: ")
 
+    # If user input incorrect, ask again
     while new_tweet_option != 'q' and new_tweet_option != "":
         new_tweet_option = raw_input("Enter to tweet again [q to quit]: ")
 
+    # Quit program if 'q' is entered
     if new_tweet_option == 'q':
         quit()
+    # Create and post new tweet if return key entered
     elif new_tweet_option == "":
         call_all_functions(INPUT_PATH, INPUT_N)
 
@@ -188,5 +197,6 @@ def call_all_functions(INPUT_PATH, INPUT_N):
 
 INPUT_PATH = sys.argv[2:]
 INPUT_N = int(sys.argv[1])
+
 
 call_all_functions(INPUT_PATH, INPUT_N)
