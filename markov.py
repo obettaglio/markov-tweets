@@ -156,12 +156,15 @@ def tweet(text):
 
     # Print previous tweet from account
     statuses = api.GetUserTimeline(screen_name='kikolivia')
+    print
+    print "Last tweet:"
     print statuses[0].text
     print
 
     # Post and print new tweet
     status = api.PostUpdate(text)
-    print text
+    print "New tweet:"
+    print status.text
     print
 
     # Ask user for next action
